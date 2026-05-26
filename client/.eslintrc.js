@@ -1,10 +1,16 @@
 module.exports = {
   "extends": "airbnb",
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "env": {
     "browser": true,
     "node": true,
     "mocha": true
+  },
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    }
   },
   "rules": {
     "import/prefer-default-export": 0,
@@ -40,6 +46,9 @@ module.exports = {
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/alt-text": 0,
     "jsx-a11y/no-autofocus": 0,
+    "no-shadow": 0,
+    "react/prop-types": 0,
+    "no-confusing-arrow": 0,
     "jsx-a11y/no-static-element-interactions": 0,
     "react/no-array-index-key": 0,
     "jsx-a11y/anchor-is-valid": [
@@ -59,6 +68,12 @@ module.exports = {
           "preferButton"
         ]
       }
-    ]
+    ],
+    "quotes": ["error", "single"],
+    "arrow-parens": ["error", "as-needed"],
+    "array-bracket-spacing": ["error", "never"],
+    "object-curly-spacing": ["error", "always"],
+    "keyword-spacing": ["error", { "before": true, "after": true }],
+    "semi": ["error", "always"]
   }
 }
