@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
-import io from "socket.io-client";
+import { io } from "socket.io-client";
+import { useLocation } from "react-router-dom";
 
 import TextContainer from '../TextContainer/TextContainer';
 import Messages from '../Messages/Messages';
@@ -13,7 +14,8 @@ const ENDPOINT = process.env.NODE_ENV === 'production' ? 'https://chat.app.aletc
 
 let socket;
 
-const Chat = ({ location }) => {
+const Chat = () => {
+  const location = useLocation();
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [users, setUsers] = useState('');
@@ -23,7 +25,7 @@ const Chat = ({ location }) => {
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
 
-    socket = io(ENDPOINT, { transports: ['websocket', 'polling', 'flashsocket'] });
+    socket = io(ENDPOINT, { transports: ['websocket', 'polling'] });
 
     setRoom(room);
     setName(name);
@@ -37,14 +39,13 @@ const Chat = ({ location }) => {
     socket.on('message', message => {
       setMessages(messages => [ ...messages, message ]);
     });
-    
+
     socket.on("roomData", ({ users }) => {
       setUsers(users);
     });
 
     return () => {
-      socket.emit('disconnect');
-      socket.off();
+      socket.disconnect();
     }
   }, [ENDPOINT, location.search]);
 
